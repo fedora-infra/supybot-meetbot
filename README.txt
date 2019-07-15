@@ -71,3 +71,4 @@ LICENSE
 The MeetBot plugin is under the same license as supybot is, a 3-clause
 BSD.  The license is documented in each code file (and also applies to
 this README file).
+
