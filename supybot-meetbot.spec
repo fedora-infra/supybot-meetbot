@@ -9,7 +9,6 @@ Group:          Applications/Internet
 License:        BSD
 URL:            http://wiki.debian.org/MeetBot
 Source0:        http://code.zgib.net/tar//MeetBot-%{version}.tar.gz
-Patch2:         meetbot-force-meetingname.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:       /usr/bin/supybot
@@ -28,7 +27,6 @@ easy to port to other bots. It is under the supybot license (3-clause BSD).
 
 %prep
 %setup -q -n MeetBot-%{version}
-%patch2 -p1
 
 %build
 
