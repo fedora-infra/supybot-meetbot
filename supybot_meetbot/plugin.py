@@ -36,11 +36,12 @@ import supybot.callbacks as callbacks
 import supybot.ircmsgs as ircmsgs
 
 import time
-import meeting
-import supybotconfig
+from . import meeting
+from . import supybotconfig
+import importlib
 # Because of the way we override names, we need to reload these in order.
-meeting = reload(meeting)
-supybotconfig = reload(supybotconfig)
+meeting = importlib.reload(meeting)
+supybotconfig = importlib.reload(supybotconfig)
 
 if supybotconfig.is_supybotconfig_enabled(meeting.Config):
     supybotconfig.setup_config(meeting.Config)
@@ -144,8 +145,8 @@ class MeetBot(callbacks.Plugin):
                     M.addrawline(nick, payload)
         except:
             import traceback
-            print traceback.print_exc()
-            print "(above exception in outFilter, ignoring)"
+            print(traceback.print_exc())
+            print("(above exception in outFilter, ignoring)")
         return msg
 
     # These are admin commands, for use by the bot owner when there
@@ -166,7 +167,7 @@ class MeetBot(callbacks.Plugin):
 
         Save all currently active meetings."""
         numSaved = 0
-        for M in meeting_cache.iteritems():
+        for M in meeting_cache.items():
             M.config.save()
         irc.reply("Saved %d meetings."%numSaved)
     savemeetings = wrap(savemeetings, ['admin'])
