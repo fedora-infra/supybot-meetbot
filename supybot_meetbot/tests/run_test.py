@@ -17,7 +17,7 @@ class MeetBotTest(unittest.TestCase):
         sys.argv[1:] = ["replay", "test-script-1.log.txt"]
         sys.path.insert(0, "..")
         try:
-            execfile("../meeting.py", globals())
+            exec(compile(open("../meeting.py", "rb").read(), "../meeting.py", 'exec'), globals())
         finally:
             del sys.path[0]
 
@@ -31,7 +31,7 @@ class MeetBotTest(unittest.TestCase):
         os.symlink("..", "MeetBot")
         try:
             output = os.popen("supybot-test ./MeetBot 2>&1").read()
-            print output
+            print(output)
             assert 'FAILED' not in output, "supybot-based tests failed."
         finally:
             os.unlink("MeetBot")
@@ -59,19 +59,19 @@ class MeetBotTest(unittest.TestCase):
     def test_css_embed(self):
         extraConfig={ }
         results = self.M_trivial(extraConfig={}).save()
-        self.assert_('<link rel="stylesheet" ' not in results['.html'])
-        self.assert_('body {'                      in results['.html'])
-        self.assert_('<link rel="stylesheet" ' not in results['.log.html'])
-        self.assert_('body {'                      in results['.log.html'])
+        self.assertTrue('<link rel="stylesheet" ' not in results['.html'])
+        self.assertTrue('body {'                      in results['.html'])
+        self.assertTrue('<link rel="stylesheet" ' not in results['.log.html'])
+        self.assertTrue('body {'                      in results['.log.html'])
     def test_css_noembed(self):
         extraConfig={'cssEmbed_minutes':False,
                      'cssEmbed_log':False,}
         M = self.M_trivial(extraConfig=extraConfig)
         results = M.save()
-        self.assert_('<link rel="stylesheet" '     in results['.html'])
-        self.assert_('body {'                  not in results['.html'])
-        self.assert_('<link rel="stylesheet" '     in results['.log.html'])
-        self.assert_('body {'                  not in results['.log.html'])
+        self.assertTrue('<link rel="stylesheet" '     in results['.html'])
+        self.assertTrue('body {'                  not in results['.html'])
+        self.assertTrue('<link rel="stylesheet" '     in results['.log.html'])
+        self.assertTrue('body {'                  not in results['.log.html'])
     def test_css_file(self):
         tmpf = tempfile.NamedTemporaryFile()
         magic_string = '546uorck6o45tuo6'
@@ -81,10 +81,10 @@ class MeetBotTest(unittest.TestCase):
                      'cssFile_log':      tmpf.name,}
         M = self.M_trivial(extraConfig=extraConfig)
         results = M.save()
-        self.assert_('<link rel="stylesheet" ' not in results['.html'])
-        self.assert_(magic_string                  in results['.html'])
-        self.assert_('<link rel="stylesheet" ' not in results['.log.html'])
-        self.assert_(magic_string                  in results['.log.html'])
+        self.assertTrue('<link rel="stylesheet" ' not in results['.html'])
+        self.assertTrue(magic_string                  in results['.html'])
+        self.assertTrue('<link rel="stylesheet" ' not in results['.log.html'])
+        self.assertTrue(magic_string                  in results['.log.html'])
     def test_css_file_embed(self):
         tmpf = tempfile.NamedTemporaryFile()
         magic_string = '546uorck6o45tuo6'
@@ -96,10 +96,10 @@ class MeetBotTest(unittest.TestCase):
                      'cssEmbed_log':     False,}
         M = self.M_trivial(extraConfig=extraConfig)
         results = M.save()
-        self.assert_('<link rel="stylesheet" '     in results['.html'])
-        self.assert_(tmpf.name                     in results['.html'])
-        self.assert_('<link rel="stylesheet" '     in results['.log.html'])
-        self.assert_(tmpf.name                     in results['.log.html'])
+        self.assertTrue('<link rel="stylesheet" '     in results['.html'])
+        self.assertTrue(tmpf.name                     in results['.html'])
+        self.assertTrue('<link rel="stylesheet" '     in results['.log.html'])
+        self.assertTrue(tmpf.name                     in results['.log.html'])
     def test_css_none(self):
         tmpf = tempfile.NamedTemporaryFile()
         magic_string = '546uorck6o45tuo6'
@@ -109,10 +109,10 @@ class MeetBotTest(unittest.TestCase):
                      'cssFile_log':      'none',}
         M = self.M_trivial(extraConfig=extraConfig)
         results = M.save()
-        self.assert_('<link rel="stylesheet" ' not in results['.html'])
-        self.assert_('<style type="text/css" ' not in results['.html'])
-        self.assert_('<link rel="stylesheet" ' not in results['.log.html'])
-        self.assert_('<style type="text/css" ' not in results['.log.html'])
+        self.assertTrue('<link rel="stylesheet" ' not in results['.html'])
+        self.assertTrue('<style type="text/css" ' not in results['.html'])
+        self.assertTrue('<link rel="stylesheet" ' not in results['.log.html'])
+        self.assertTrue('<style type="text/css" ' not in results['.log.html'])
 
 
 
@@ -122,7 +122,7 @@ if __name__ == '__main__':
         unittest.main()
     else:
         for testname in sys.argv[1:]:
-            print testname
+            print(testname)
             if hasattr(MeetBotTest, testname):
                 MeetBotTest(methodName=testname).debug()
             else:
