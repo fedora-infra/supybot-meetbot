@@ -170,6 +170,8 @@ class GenericItem(_BaseItem):
         repl = self.get_replacements(escapewith=writers.text)
         repl['link'] = self.logURL(M)
         return self.text_template%repl
+    def __str__(self):
+        return "%s by %s at %s : %s" % (self.itemtype, self.nick, self.time, self.line)
 
 
 class Info(GenericItem):
