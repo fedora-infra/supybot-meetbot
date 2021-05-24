@@ -34,6 +34,8 @@ import os
 import re
 import stat
 
+from kitchen.text.converters import to_bytes
+
 import writers
 import items
 reload(writers)
@@ -148,8 +150,8 @@ class Config(object):
             meetingname = self.M._meetingname.replace('/', '')
         else:
             meetingname = channel
-        path = pattern%locals()
-        path = time.strftime(path, self.M.starttime)
+        path = pattern % locals()
+        path = time.strftime(to_bytes(path), self.M.starttime)
         # If we want the URL name, append URL prefix and return
         if url:
             return os.path.join(self.logUrlPrefix, path)
@@ -408,7 +410,6 @@ class MeetingCommands(object):
         commands = [ "#"+x[3:] for x in dir(self) if x[:3]=="do_" ]
         commands.sort()
         self.reply("Available commands: "+(" ".join(commands)))
-            
 
 
 class Meeting(MeetingCommands, object):
