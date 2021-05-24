@@ -1,5 +1,4 @@
-USAGE
-~~~~~
+# USAGE
 http://wiki.debian.org/MeetBot
 
 Inspired by the original MeetBot, by Holger Levsen, which was itself a
@@ -11,8 +10,7 @@ information on configuring supybot the first time, including taking
 ownership the first time.
 
 
-DESIGN DECISIONS
-~~~~~~~~~~~~~~~~
+# DESIGN DECISIONS
 The MeetBot plugin doesn't operate like a regular supybot plugin.  It
 bypasses the normal command system.  Instead it listens for all lines
 (it has to log them all anyway) and if it sees a command, it acts on it.
@@ -31,8 +29,7 @@ bypasses the normal command system.  Instead it listens for all lines
   with some preexisting plugins.
 
 
-INSTALLATION
-~~~~~~~~~~~~
+# INSTALLATION
 
 Requirements: 
 * pygments (debian package python-pygments) (for pretty IRC logs).
@@ -66,8 +63,7 @@ nothing about.  It may be worth hooking MeetBot into that system.
 
 
 
-LICENSE
-~~~~~~~
+# LICENSE
 The MeetBot plugin is under the same license as supybot is, a 3-clause
 BSD.  The license is documented in each code file (and also applies to
 this README file).
