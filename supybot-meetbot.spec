@@ -48,63 +48,11 @@ rm -rf $RPM_BUILD_ROOT
 * Wed Nov 18 2015 Kevin Fenzi <kevin@scrye.com> - 0.1.4-15
 - Add patch to force meeting name on start. Fixes bug #1283357
 
-* Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.1.4-14
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
-
-* Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.1.4-13
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
-
 * Sun Jan 05 2014 Kevin Fenzi <kevin@scrye.com> 0.1.4-12
 - Add patch from Michael Scherer to show what undo undid. 
-
-* Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.1.4-11
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
 * Wed May 15 2013 Toshio Kuratomi <toshio@fedoraproject.org> - 0.1.4-10
 - Fix for traceback if meeting names contain non-ascii chars
 
-* Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.1.4-9
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
-
-* Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.1.4-8
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
-
-* Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.1.4-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
-
-* Mon Apr 18 2011 Dave Riches <david.r@ultracar.co.uk> - 0.1.4-6
-- added requires /usr/bin/supybot to fix dependency issue
-
-* Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.1.4-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
-
-* Thu Jul 22 2010 David Malcolm <dmalcolm@redhat.com> - 0.1.4-4
-- Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
-
-* Fri Sep 11 2009 Kevin Fenzi <kevin@tummy.com> - 0.1.4-3
-- Add default css files. 
-
-* Fri Sep 11 2009 Kevin Fenzi <kevin@tummy.com> - 0.1.4-2
-- Fix url
-
 * Fri Sep 11 2009 Kevin Fenzi <kevin@tummy.com> - 0.1.4-1
 - Update to 0.1.4 release. 
-
-* Sun Aug 23 2009 Kevin Fenzi <kevin@tummy.com> - 0.1.3-1
-- Update to 0.1.3 release. 
-
-* Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.1.2-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
-
-* Wed Jul 15 2009 Kevin Fenzi <kevin@tummy.com> - 0.1.2-1
-- Update to 0.1.2 release. 
-
-* Tue Jul 07 2009 Kevin Fenzi <kevin@tummy.com> - 0.1.1-2
-- Fix install location to be the correct name. 
-- Add additional doc files
-
-* Mon Jul 06 2009 Kevin Fenzi <kevin@tummy.com> - 0.1.1-1
-- Upgrade to 0.1.1 version
-
-* Sun Jun 14 2009 Kevin Fenzi <kevin@tummy.com> - 0-0.1.20090614darcs
-- Initial version for fedora review
