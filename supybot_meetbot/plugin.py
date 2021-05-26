@@ -268,6 +268,10 @@ class MeetBot(callbacks.Plugin):
         To enable this, you must comment out a line in the main code.
         It may be enabled in a future version.
         """
+        
+        # this is disabled comment out this return line to enable
+        return
+
         # First, proxy to our parent classes (__parent__ set in __init__)
         try:
             return self.__parent.__getattr__(name)
