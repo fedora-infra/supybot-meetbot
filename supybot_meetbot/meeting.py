@@ -152,7 +152,7 @@ class Config(object):
         else:
             meetingname = channel
         path = pattern % locals()
-        path = time.strftime(to_bytes(path), self.M.starttime)
+        path = time.strftime(path, self.M.starttime)
         # If we want the URL name, append URL prefix and return
         if url:
             return os.path.join(self.logUrlPrefix, path)
