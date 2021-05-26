@@ -102,7 +102,8 @@ class Config(object):
     def enc(self, text):
         return text.encode(self.output_codec, 'replace')
     def dec(self, text):
-        return text.decode(self.input_codec, 'replace')
+        #return text.decode(self.input_codec, 'replace')
+        return text
     # Write out select logfiles
     update_realtime = True
     # CSS configs:
