@@ -100,7 +100,8 @@ class Config(object):
     output_codec = 'utf-8'
     # Functions to do the i/o conversion.
     def enc(self, text):
-        return text.encode(self.output_codec, 'replace')
+        #return text.encode(self.output_codec, 'replace')
+        return text
     def dec(self, text):
         #return text.decode(self.input_codec, 'replace')
         return text
