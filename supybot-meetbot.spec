@@ -38,7 +38,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc README.md supybot_meetbot/doc/Manual.txt supybot_meetbot/doc/meetingLocalConfig-example.py
+%doc README.md supybot_meetbot/doc/Manual.txt supybot_meetbot/README.txt supybot_meetbot/doc/meetingLocalConfig-example.py
 %{python3_sitelib}/supybot/plugins/MeetBot
 
 %changelog
