@@ -46,7 +46,7 @@ import fedora_messaging
 from fedora_messaging.api import publish, Message
 from fedora_messaging.exceptions import PublishReturned, ConnectionException
 
-__version__ = "0.1.4"
+__version__ = "0.3"
 
 class Config(object):
     #
@@ -64,7 +64,7 @@ class Config(object):
     # signs (%%).  This will be joined with the directories above.
     filenamePattern = '%(channel)s/%%Y/%(channel)s.%%F-%%H.%%M'
     # Where to say to go for more information about MeetBot
-    MeetBotInfoURL = 'http://wiki.debian.org/MeetBot'
+    MeetBotInfoURL = 'https://github.com/fedora-infra/supybot-meetbot'
     # This is used with the #restrict command to remove permissions from files.
     RestrictPerm = stat.S_IRWXO|stat.S_IRWXG  # g,o perm zeroed
     # RestrictPerm = stat.S_IRWXU|stat.S_IRWXO|stat.S_IRWXG  #u,g,o perm zeroed
