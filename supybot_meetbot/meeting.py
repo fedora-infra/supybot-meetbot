@@ -42,6 +42,10 @@ import importlib
 importlib.reload(writers)
 importlib.reload(items)
 
+import fedora_messaging
+from fedora_messaging.api import publish, Message
+from fedora_messaging.exceptions import PublishReturned, ConnectionException
+
 __version__ = "0.1.4"
 
 class Config(object):
@@ -122,6 +126,9 @@ class Config(object):
         '.txt': writers.Text,
         #'.rst.html':writers.HTMLfromReST,
         }
+
+    # Do we want to send fedora_messages
+    send_fedora_messaging = False
 
 
     def __init__(self, M, writeRawLog=False, safeMode=False):
@@ -267,6 +274,8 @@ class MeetingCommands(object):
         if line.strip():
             self.do_meetingtopic(nick=nick, line=line, time_=time_, **kwargs)
         self.do_meetingname(nick=nick, line=line, time_=time_, **kwargs)
+        if self.config.send_fedora_messaging is True:
+            self.sendfedoramessage("meeting.start", **kwargs)
     def do_endmeeting(self, nick, time_, **kwargs):
         """End the meeting."""
         if not self.isChair(nick): return
@@ -284,6 +293,8 @@ class MeetingCommands(object):
         for messageline in message.split('\n'):
             self.reply(messageline)
         self._meetingIsOver = True
+        if self.config.send_fedora_messaging:
+            self.sendfedoramessage("meeting.complete", **kwargs)
     def do_topic(self, nick, line, **kwargs):
         """Set a new topic in the channel."""
         if not self.isChair(nick): return
@@ -291,6 +302,8 @@ class MeetingCommands(object):
         m = items.Topic(nick=nick, line=line, **kwargs)
         self.additem(m)
         self.settopic()
+        if self.config.send_fedora_messaging:
+            self.sendfedoramessage("meeting.topic.update", **kwargs)
     def do_meetingtopic(self, nick, line, **kwargs):
         """Set a meeting topic (included in all sub-topics)"""
         if not self.isChair(nick): return
@@ -310,18 +323,24 @@ class MeetingCommands(object):
         if not self.isChair(nick): return
         m = items.Agreed(nick, **kwargs)
         self.additem(m)
+        if self.config.send_fedora_messaging:
+            self.sendfedoramessage("meeting.item.agreed", **kwargs)
     do_agree = do_agreed
     def do_accepted(self, nick, **kwargs):
         """Add aggreement to the minutes - chairs only."""
         if not self.isChair(nick): return
         m = items.Accepted(nick, **kwargs)
         self.additem(m)
+        if self.config.send_fedora_messaging:
+            self.sendfedoramessage("meeting.item.accepted", **kwargs)
     do_accept = do_accepted
     def do_rejected(self, nick, **kwargs):
         """Add aggreement to the minutes - chairs only."""
         if not self.isChair(nick): return
         m = items.Rejected(nick, **kwargs)
         self.additem(m)
+        if self.config.send_fedora_messaging:
+            self.sendfedoramessage("meeting.item.rejected", **kwargs)
     do_rejected = do_rejected
     def do_chair(self, nick, line, **kwargs):
         """Add a chair to the meeting."""
@@ -384,18 +403,26 @@ class MeetingCommands(object):
         nick to be seen."""
         m = items.Action(**kwargs)
         self.additem(m)
+        if self.config.send_fedora_messaging:
+            self.sendfedoramessage("meeting.item.action", **kwargs)
     def do_info(self, **kwargs):
         """Add informational item to the minutes."""
         m = items.Info(**kwargs)
         self.additem(m)
+        if self.config.send_fedora_messaging:
+            self.sendfedoramessage("meeting.item.info", **kwargs)
     def do_idea(self, **kwargs):
         """Add informational item to the minutes."""
         m = items.Idea(**kwargs)
         self.additem(m)
+        if self.config.send_fedora_messaging:
+            self.sendfedoramessage("meeting.item.idea", **kwargs)
     def do_help(self, **kwargs):
         """Add call for help to the minutes."""
         m = items.Help(**kwargs)
         self.additem(m)
+        if self.config.send_fedora_messaging:
+            self.sendfedoramessage("meeting.item.help", **kwargs)
     do_halp = do_help
     def do_nick(self, nick, line, **kwargs):
         """Make meetbot aware of a nick which hasn't said anything.
@@ -410,6 +437,8 @@ class MeetingCommands(object):
         """Add informational item to the minutes."""
         m = items.Link(**kwargs)
         self.additem(m)
+        if self.config.send_fedora_messaging:
+            self.sendfedoramessage("meeting.item.link", **kwargs)
     def do_commands(self, **kwargs):
         commands = [ "#"+x[3:] for x in dir(self) if x[:3]=="do_" ]
         commands.sort()
@@ -530,6 +559,32 @@ class Meeting(MeetingCommands, object):
         """Add an item to the meeting minutes list.
         """
         self.minutes.append(m)
+
+    def sendfedoramessage(self, messagetopic, **kwargs):
+        chairs = self.chairs
+        chairs[self.owner] = chairs.get(self.owner, True)
+
+        payload = dict(
+            owner=self.owner,
+            chairs=chairs,
+            attendees=self.attendees,
+            url=self.config.filename(url=True),
+            meeting_topic=self._meetingTopic,
+            topic=self.currenttopic,
+            channel=self.channel,
+            details=kwargs,
+        )
+        try:
+            msg = fedora_messaging.api.Message(
+                topic="meetbot.{}.v1".format(messagetopic),
+                body=payload,
+            )
+            print(msg)
+            fedora_messaging.api.publish(msg)
+        except fedora_messaging.exceptions.PublishReturned as e:
+            print("Fedora Messaging broker rejected message {}: {}".format(msg.id, e))
+        except fedora_messaging.exceptions.ConnectionException as e:
+            print("Error sending message {}: {}".format(msg.id, e))
 
 
 

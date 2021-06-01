@@ -12,6 +12,7 @@ Requires:       limnoria
 Requires:       python3-pygments
 Requires:       python3-docutils
 Requires:       python3-kitchen
+Requires:       fedora-messaging
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
