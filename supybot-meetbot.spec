@@ -1,5 +1,5 @@
 Name:           supybot-meetbot
-Version:        0.2
+Version:        0.3
 Release:        1%{?dist}
 Summary:        Plugin for Supybot for handling IRC meetings
 
@@ -43,6 +43,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python3_sitelib}/supybot/plugins/MeetBot
 
 %changelog
+* Mon Jun 01 2021 Ryan Lerch <rlerch@redhat.com> - 0.3-1
+- Add support for Fedora Messaging
+
 * Mon May 24 2021 Ryan Lerch <rlerch@redhat.com> - 0.2-1
 - Change to Python 3
 - New 0.2 Release
