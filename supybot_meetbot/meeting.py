@@ -579,7 +579,6 @@ class Meeting(MeetingCommands, object):
                 topic="meetbot.{}.v1".format(messagetopic),
                 body=payload,
             )
-            print(msg)
             fedora_messaging.api.publish(msg)
         except fedora_messaging.exceptions.PublishReturned as e:
             print("Fedora Messaging broker rejected message {}: {}".format(msg.id, e))
