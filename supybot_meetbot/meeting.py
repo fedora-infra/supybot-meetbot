@@ -152,9 +152,9 @@ class Config(object):
         # Certain test channels always get the same name - don't need
         # file prolifiration for them
         if self.M.channel in self.specialChannels:
-            pattern = self.specialChannelFilenamePattern
+            pattern = self.M.config.specialChannelFilenamePattern
         else:
-            pattern = self.filenamePattern
+            pattern = self.M.config.filenamePattern
         channel = self.M.channel.strip('# ').lower().replace('/', '')
         if self.M._meetingname:
             meetingname = self.M._meetingname.replace('/', '')
@@ -164,7 +164,7 @@ class Config(object):
         path = time.strftime(path, self.M.starttime)
         # If we want the URL name, append URL prefix and return
         if url:
-            return os.path.join(self.logUrlPrefix, path)
+            return os.path.join(self.M.config.logUrlPrefix, path)
         path = os.path.join(self.logFileDir, path)
         # make directory if it doesn't exist...
         dirname = os.path.dirname(path)
@@ -275,7 +275,7 @@ class MeetingCommands(object):
             self.do_meetingtopic(nick=nick, line=line, time_=time_, **kwargs)
         self.do_meetingname(nick=nick, line=line, time_=time_, **kwargs)
         if self.config.send_fedora_messaging is True:
-            self.sendfedoramessage("meeting.start", **kwargs)
+            self.sendfedoramessage("meeting.start", nick=nick, line=line, time_=time_, **kwargs)
     def do_endmeeting(self, nick, time_, **kwargs):
         """End the meeting."""
         if not self.isChair(nick): return
@@ -294,7 +294,7 @@ class MeetingCommands(object):
             self.reply(messageline)
         self._meetingIsOver = True
         if self.config.send_fedora_messaging:
-            self.sendfedoramessage("meeting.complete", **kwargs)
+            self.sendfedoramessage("meeting.complete", nick=nick, time_=time_, **kwargs)
     def do_topic(self, nick, line, **kwargs):
         """Set a new topic in the channel."""
         if not self.isChair(nick): return
@@ -303,7 +303,7 @@ class MeetingCommands(object):
         self.additem(m)
         self.settopic()
         if self.config.send_fedora_messaging:
-            self.sendfedoramessage("meeting.topic.update", **kwargs)
+            self.sendfedoramessage("meeting.topic.update", nick=nick, line=line, **kwargs)
     def do_meetingtopic(self, nick, line, **kwargs):
         """Set a meeting topic (included in all sub-topics)"""
         if not self.isChair(nick): return
@@ -324,7 +324,7 @@ class MeetingCommands(object):
         m = items.Agreed(nick, **kwargs)
         self.additem(m)
         if self.config.send_fedora_messaging:
-            self.sendfedoramessage("meeting.item.agreed", **kwargs)
+            self.sendfedoramessage("meeting.item.agreed", nick=nick, **kwargs)
     do_agree = do_agreed
     def do_accepted(self, nick, **kwargs):
         """Add aggreement to the minutes - chairs only."""
@@ -332,7 +332,7 @@ class MeetingCommands(object):
         m = items.Accepted(nick, **kwargs)
         self.additem(m)
         if self.config.send_fedora_messaging:
-            self.sendfedoramessage("meeting.item.accepted", **kwargs)
+            self.sendfedoramessage("meeting.item.accepted", nick=nick, **kwargs)
     do_accept = do_accepted
     def do_rejected(self, nick, **kwargs):
         """Add aggreement to the minutes - chairs only."""
@@ -340,7 +340,7 @@ class MeetingCommands(object):
         m = items.Rejected(nick, **kwargs)
         self.additem(m)
         if self.config.send_fedora_messaging:
-            self.sendfedoramessage("meeting.item.rejected", **kwargs)
+            self.sendfedoramessage("meeting.item.rejected", nick=nick, **kwargs)
     do_rejected = do_rejected
     def do_chair(self, nick, line, **kwargs):
         """Add a chair to the meeting."""
@@ -563,7 +563,7 @@ class Meeting(MeetingCommands, object):
     def sendfedoramessage(self, messagetopic, **kwargs):
         chairs = self.chairs
         chairs[self.owner] = chairs.get(self.owner, True)
-
+        kwargs["time_"] = time.mktime(kwargs["time_"])
         payload = dict(
             owner=self.owner,
             chairs=chairs,
@@ -576,7 +576,7 @@ class Meeting(MeetingCommands, object):
         )
         try:
             msg = fedora_messaging.api.Message(
-                topic="meetbot.{}.v1".format(messagetopic),
+                topic="meetbot.{}".format(messagetopic),
                 body=payload,
             )
             fedora_messaging.api.publish(msg)
@@ -663,4 +663,3 @@ if __name__ == '__main__':
         #M.save() # should be done by #endmeeting in the logs!
     else:
         print('Command "%s" not found.'%sys.argv[1])
-
