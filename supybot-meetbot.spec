@@ -1,11 +1,11 @@
 Name:           supybot-meetbot
-Version:        0.3
+Version:        0.4
 Release:        1%{?dist}
 Summary:        Plugin for Supybot for handling IRC meetings
 
 Group:          Applications/Internet
 License:        BSD
-URL:            https://github.com/fedora-infra/supybot-koji
+URL:            https://github.com/fedora-infra/supybot-meetbot
 Source0:        https://github.com/fedora-infra/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 
 Requires:       limnoria
@@ -43,6 +43,10 @@ rm -rf $RPM_BUILD_ROOT
 %{python3_sitelib}/supybot/plugins/MeetBot
 
 %changelog
+* Wed Sep 22 2021 Ryan Lerch <rlerch@redhat.com> - 0.4-1
+- Fix message body format when sending a Fedora message
+- Fix standard commands like .listmeetings and .recent
+
 * Mon Jun 01 2021 Ryan Lerch <rlerch@redhat.com> - 0.3-1
 - Add support for Fedora Messaging
 
