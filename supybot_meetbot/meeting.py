@@ -46,7 +46,7 @@ import fedora_messaging
 from fedora_messaging.api import publish, Message
 from fedora_messaging.exceptions import PublishReturned, ConnectionException
 
-__version__ = "0.3"
+__version__ = "0.4"
 
 class Config(object):
     #
